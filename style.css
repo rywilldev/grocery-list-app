@@ -42,3 +42,9 @@ button {
   color: rgba(253, 253, 253, 0.8);
   background-color: #ac485a;
 }
+
+#add-button:active {
+  background-color: #ac485a;
+  box-shadow: 0 5px #666;
+  transform: translateY(1px);
+}
