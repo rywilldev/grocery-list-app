@@ -17,17 +17,17 @@ const inputFieldEl = document.querySelector("#input-field");
 const addButtonEl = document.querySelector("#add-button");
 const shoppingListEl = document.querySelector("#shopping-list");
 
-function addInput() {
-  shoppingListEl.innerHTML += `<li>${inputValue}</li>`;
-}
-
-function clearInput() {
-  inputFieldEl.value = "";
-}
-
 addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
   push(shoppingListInDB, inputValue);
   addInput(inputValue);
-  clearInput();
+  clearInputFieldEl();
 });
+
+function addInput(inputValue) {
+  shoppingListEl.innerHTML += `<li>${inputValue}</li>`;
+}
+
+function clearInputFieldEl() {
+  inputFieldEl.value = "";
+}
