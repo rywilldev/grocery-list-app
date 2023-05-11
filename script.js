@@ -14,16 +14,6 @@ const app = initializeApp(appSettings);
 const database = getDatabase(app);
 const shoppingListInDB = ref(database, "shoppingList");
 
-onValue(shoppingListInDB, function(snapshot) {
-  let shoppingArray = Object.values(snapshot.val());
-  clearInputFieldEl();
-  for (let i = 0; i < shoppingArray.length; i++) {
-    let currentShoppingItem = shoppingArray[i];
-    let inputValue = currentShoppingItem;
-    appendItemToShoppingListEl(shoppingArray[i]);
-  }
-});
-
 const inputFieldEl = document.querySelector("#input-field");
 const addButtonEl = document.querySelector("#add-button");
 const shoppingListEl = document.querySelector("#shopping-list");
@@ -33,6 +23,21 @@ addButtonEl.addEventListener("click", function () {
   push(shoppingListInDB, inputValue);
   clearInputFieldEl();
 });
+
+onValue(shoppingListInDB, function(snapshot) {
+  let shoppingArray = Object.values(snapshot.val());
+  clearShoppingListEl();
+  for (let i = 0; i < shoppingArray.length; i++) {
+    let currentShoppingItem = shoppingArray[i];
+    let inputValue = currentShoppingItem;
+    appendItemToShoppingListEl(shoppingArray[i]);
+  }
+});
+
+function clearShoppingListEl() {
+  shoppingListEl.innerHTML = "";
+}
+
 
 function appendItemToShoppingListEl(inputValue) {
   shoppingListEl.innerHTML += `<li>${inputValue}</li>`;
