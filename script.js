@@ -21,29 +21,35 @@ const shoppingListEl = document.getElementById("shopping-list");
 
 addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
-
-  push(shoppingListInDB, inputValue);
-
-  clearInputFieldEl();
+  if (inputValue === "") {
+    shoppingListEl.innerHTML = "Please enter an item.";
+  } else {
+    push(shoppingListInDB, inputValue);
+    clearInputFieldEl();
+  }
 });
 
 onValue(shoppingListInDB, function (snapshot) {
   if (snapshot.exists()) {
-  let itemsArray = Object.entries(snapshot.val());
+    let itemsArray = Object.entries(snapshot.val());
 
-  clearShoppingListEl();
+    clearShoppingListEl();
 
-  for (let i = 0; i < itemsArray.length; i++) {
-    let currentItem = itemsArray[i];
-    let currentItemID = currentItem[0];
-    let currentItemValue = currentItem[1];
+    for (let i = 0; i < itemsArray.length; i++) {
+      let currentItem = itemsArray[i];
+      let currentItemID = currentItem[0];
+      let currentItemValue = currentItem[1];
 
-    appendItemToShoppingListEl(currentItem);
-  }
-} else {
+      appendItemToShoppingListEl(currentItem);
+    }
+  } else {
     shoppingListEl.innerHTML = "No items here... yet.";
   }
 });
+
+function disableAddToCartBtn() {
+  document.querySelector("#add-button").disabled = true;
+}
 
 function clearShoppingListEl() {
   shoppingListEl.innerHTML = "";
@@ -64,4 +70,4 @@ function appendItemToShoppingListEl(item) {
     let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
     remove(exactLocationOfItemInDB);
   });
-} 
+}
