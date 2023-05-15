@@ -8,61 +8,61 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const appSettings = {
-  databaseURL: "https://realtime-database-b5195-default-rtdb.firebaseio.com/",
+  databaseURL: "https://daily-dont-forget-default-rtdb.firebaseio.com/",
 };
 
 const app = initializeApp(appSettings);
 const database = getDatabase(app);
-const shoppingListInDB = ref(database, "shoppingList");
+const taskListInDB = ref(database, "taskList");
 
-const inputFieldEl = document.getElementById("input-field");
-const addButtonEl = document.getElementById("add-button");
-const shoppingListEl = document.getElementById("shopping-list");
+const inputFieldEl = document.querySelector("#task-input");
+const addButtonEl = document.querySelector("#task-btn");
+const taskListEl = document.querySelector("#task-list");
 
 addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
   if (inputValue === "") {
-    shoppingListEl.innerHTML = "Please enter an item.";
+    taskListEl.innerHTML = "Please enter an task.";
   } else {
-    push(shoppingListInDB, inputValue);
+    push(taskListInDB, inputValue);
     clearInputFieldEl();
   }
 });
 
-onValue(shoppingListInDB, function (snapshot) {
+onValue(taskListInDB, function (snapshot) {
   if (snapshot.exists()) {
     let itemsArray = Object.entries(snapshot.val());
 
-    clearShoppingListEl();
+    clearTaskListEl();
 
     for (let i = 0; i < itemsArray.length; i++) {
       let currentItem = itemsArray[i];
       let currentItemID = currentItem[0];
       let currentItemValue = currentItem[1];
-      appendItemToShoppingListEl(currentItem);
+      appendItemToTaskListEl(currentItem);
     }
   } else {
-    shoppingListEl.innerHTML = "No items here... yet.";
+    taskListEl.innerHTML = "No tasks here... yet.";
   }
 });
 
-function clearShoppingListEl() {
-  shoppingListEl.innerHTML = "";
+function clearTaskListEl() {
+  taskListEl.innerHTML = "";
 }
 
 function clearInputFieldEl() {
   inputFieldEl.value = "";
 }
 
-function appendItemToShoppingListEl(item) {
+function appendItemToTaskListEl(item) {
   let itemID = item[0];
   let itemValue = item[1];
   let newEl = document.createElement("li");
   newEl.textContent = itemValue;
-  shoppingListEl.append(newEl);
+  taskListEl.append(newEl);
   // event listener to remove item from database
   newEl.addEventListener("click", function () {
-    let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
+    let exactLocationOfItemInDB = ref(database, `taskList/${itemID}`);
     remove(exactLocationOfItemInDB);
   });
 }
