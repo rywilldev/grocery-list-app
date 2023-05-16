@@ -62,8 +62,11 @@ function appendItemToShoppingListEl(item) {
 
   newEl.textContent = itemValue;
   shoppingListEl.append(newEl);
+  newEl.addEventListener("click", function() {
+    newEl.innerHTML = `<strike> ${itemValue} </strike>`;
+  })
   // event listener to remove item from database
-  newEl.addEventListener("click", function () {
+  newEl.addEventListener("dblclick", function () {
     let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
 
     remove(exactLocationOfItemInDB);
