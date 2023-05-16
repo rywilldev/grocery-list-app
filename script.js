@@ -8,7 +8,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const appSettings = {
-  databaseURL: "https://realtime-database-b5195-default-rtdb.firebaseio.com/",
+  databaseURL:
+    "https://realtime-database-b5195-default-rtdb.firebaseio.com/",
 };
 
 const app = initializeApp(appSettings);
@@ -21,12 +22,10 @@ const shoppingListEl = document.getElementById("shopping-list");
 
 addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
-  if (inputValue === "") {
-    shoppingListEl.innerHTML = "Please enter an item.";
-  } else {
-    push(shoppingListInDB, inputValue);
-    clearInputFieldEl();
-  }
+
+  push(shoppingListInDB, inputValue);
+
+  clearInputFieldEl();
 });
 
 onValue(shoppingListInDB, function (snapshot) {
@@ -39,10 +38,11 @@ onValue(shoppingListInDB, function (snapshot) {
       let currentItem = itemsArray[i];
       let currentItemID = currentItem[0];
       let currentItemValue = currentItem[1];
+
       appendItemToShoppingListEl(currentItem);
     }
   } else {
-    shoppingListEl.innerHTML = "No items here... yet.";
+    shoppingListEl.innerHTML = "No items here... yet";
   }
 });
 
@@ -57,15 +57,17 @@ function clearInputFieldEl() {
 function appendItemToShoppingListEl(item) {
   let itemID = item[0];
   let itemValue = item[1];
+
   let newEl = document.createElement("li");
+
   newEl.textContent = itemValue;
   shoppingListEl.append(newEl);
-  newEl.addEventListener("click", function() {
-    newEl.innerHTML = `<strike> ${itemValue} </strike`;
-  })
   // event listener to remove item from database
-  newEl.addEventListener("dblclick", function () {
+  newEl.addEventListener("click", function () {
     let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
+
     remove(exactLocationOfItemInDB);
   });
+
+  shoppingListEl.append(newEl);
 }
