@@ -22,8 +22,8 @@ const shoppingListEl = document.getElementById("shopping-list");
 
 addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
-
-  push(shoppingListInDB, inputValue);
+  let lowerInputValue = inputValue.toLowerCase();
+  push(shoppingListInDB, lowerInputValue);
 
   clearInputFieldEl();
 });
